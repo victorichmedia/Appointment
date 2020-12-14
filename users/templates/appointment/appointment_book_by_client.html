@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1 class="text-center"> My Booked Appointment</h1>
+
+   
+   
+    {% if appointmentinstance_list %}
+    <div class="container">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Appointment</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for appointment in appointmentinstance_list %}
+          <tr>
+            <td>{{ appointment.client }}</td>
+            <td>{{ appointment.status }}</td>
+            <td><a class="btn btn-danger text-white" href="{% url 'appointment_detail' appointment.appointment.pk %}">Details</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div> 
+      
+    {% else %}
+      <p>You have not book Any appointment</p>
+    {% endif %}          
+{% endblock %}

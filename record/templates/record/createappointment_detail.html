@@ -1,0 +1,26 @@
+{% extends 'base_generic.html '%}
+
+{%block content%}
+    <div class="container">
+        <div class="row  justify-content-center">
+          <div class="col">
+            Name: {{ createappointment.first_name }} {{ createappointment.last_name }}
+          </div>
+          <div class="col">
+            Email: {{ createappointment.email }}
+          </div>
+          <div class="col">
+            Time: {{ createappointment.time_of_appointment  }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            Date: {{ createappointment.date  }}
+          </div>
+          <div class="col-6">
+            who to see: {{ createappointment.who_to_see  }}
+          </div>
+        </div>
+    </div>
+    
+{%endblock%}

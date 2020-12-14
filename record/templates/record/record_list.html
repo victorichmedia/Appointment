@@ -1,0 +1,52 @@
+{% extends 'base_generic.html'%}
+
+{% block content %}
+    <h1 class="text-center"> My Appointments</h1>
+    {% if appointment_list %}
+        <div class="container-fluid">
+            <table class="table ">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">S/N</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col"> </th>
+                </tr>
+                </thead>
+                <tbody>
+            {% for appointment in appointment_list %}
+                    <tr>
+                        <th scope="row">{{ appointment.pk }}</th>
+                        <td>{{ appointment.first_name }}</td>
+                        <td>{{ appointment.last_name }}</td>
+                        <td>{{ appointment.email }}</td>
+                        <td><a class="btn btn-primary" href="{% url 'appointment_detail'  appointment.pk %}" role="button">See details</a></td>
+                    </tr>
+                </tbody>
+            {% endfor %}
+                </table>
+        </div>
+    
+        {% else %}
+        <p>There are no appointment.</p>
+    {% endif%}
+        
+    {% block pagination %}
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+  {% endblock %} 
+{% endblock %}
