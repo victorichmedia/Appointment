@@ -5,8 +5,10 @@ from record.models import AppointmentInstance
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.urls import reverse
-
-from .models import Doctor, User
+from django.contrib.auth import login, authenticate
+from .models import User
+from users.forms import RegistrationForm
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
@@ -16,52 +18,22 @@ class AppointmentBookByClientListView(LoginRequiredMixin,generic.ListView):
     paginate_by = 10
     
     def get_queryset(self):
-        return AppointmentInstance.objects.filter(client=self.request.user).filter(status__exact = 'Pending')
-
-class DoctorListView(generic.ListView):
-    model = Doctor
-    context_object_name = 'doctor_list' 
-    template_name ='users/doctor_list.html'
-    getqueryset = Doctor.objects.all()
-    paginate_by = 10
-    
-
-class DoctorDetailView(generic.DetailView):
-    model = Doctor
-
-class UserListView(generic.ListView):
-    model = User
-    context_object_name = 'user_list' 
-    template_name ='users/user_list.html'
-    getqueryset = User.objects.all()
-    paginate_by = 10
-
-class UserDetailView(generic.DetailView):
-    model = User
+        return AppointmentInstance.objects.filter(client=self.request.user)
 
 
 
-class DoctorCreate(CreateView):
-    model = Doctor
-    fields = ['first_name', 'last_name', 'date_of_birth', 'specification']
-   
-class DoctorUpdate(UpdateView):
-    model = Doctor
-    fields = '__all__' # Not recommended (potential security issue if more fields added)
-    
-class DoctorDelete(DeleteView):
-    model = Doctor
-    success_url = reverse_lazy('doctors')
+#User registration
 
+def registration_view(request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data('password')
+            user = authenticate(username = username, password = password)
+            login(request, user)
+            return redirect('index')
+        else:
+            form = RegistrationForm()
+        return render(request,'users/register.html', {'form' : form })
 
-class UserCreate(CreateView):
-    model = User
-    fields = ['first_name', 'last_name', 'email', 'username', 'password']
-   
-class UserUpdate(UpdateView):
-    model = User
-    fields = ['first_name', 'last_name', 'date_of_birth', 'email', 'username'] # Not recommended (potential security issue if more fields added)
-    
-class UserDelete(DeleteView):
-    model = User
-    success_url = reverse_lazy('users')

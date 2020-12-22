@@ -50,28 +50,4 @@ class User(AbstractBaseUser):
       return self.username
 
 
-class Doctor(models.Model):
-    """Model representing an author."""
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    date_of_birth = models.DateField(null=True, blank=True)
-    is_staff = models.BooleanField('staff status', default=True)
-    specification = models.ManyToManyField('Specification')
-   
-  
-    def get_absolute_url(self):
-        """Returns the url to access a particular doctor instance."""
-        return reverse('doctor-detail', args=[str(self.id)])
-
-    def __str__(self):
-        """String for representing the Model object."""
-        return f'{self.first_name}, {self.last_name}'
-
-class Specification(models.Model):
-    """Model representing doctor specification."""
-    name = models.CharField(max_length=200, help_text='What is your specification (e.g. Medical Doctor)')
-    
-    def __str__(self):
-        """String for representing the Model object."""
-        return self.name
 

@@ -2,7 +2,6 @@ from django.db import models
 import uuid
 from django.contrib.auth.models import User
 from datetime import date
-from users.models import Doctor
 from django.urls import reverse
 
 # Create your models here.
@@ -13,16 +12,10 @@ class CreateAppointment(models.Model):
     email = models.EmailField('email', blank=True)
     time_of_appointment = models.TimeField()
     date = models.DateField()
-    who_to_see =  models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True, blank=True)
-    
 
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.first_name}'
-    
-    def get_absolute_url(self):
-        """Returns the url to access a detail record for this appointment."""
-        return reverse('appointment_book_by_client', args=[str(self.id)])
     
     def get_absolute_url(self):
         """Returns the url to access a detail record for this appointment."""
